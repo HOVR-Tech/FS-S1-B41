@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog</title>
+    <link rel="stylesheet" href="blog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- NavBar -->
+    <nav>
+      <div class="nav-left">
+        <ul>
+          <li>
+            <a href="index.html"><img src="img/logodumbways-removebg-preview.png" /></a>
+          </li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blog.html" class="blog">Blog</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <a href="contact.html">Contact</a>
+      </div>
+    </nav>
+    <!-- Akhir NavBar -->
+
+    <!-- form -->
+    <div class="blog">
+      <div class="blog-form">
+        <div class="form-container">
+          <form onsubmit="addBlog(event); this.reset(); return false">
+            <h1>Create Post Blog</h1>
+            <div>
+              <label for="input-title">Title</label>
+              <input id="input-title" />
+            </div>
+            <div>
+              <label for="input-content">Content</label>
+              <textarea id="input-content" cols="30" rows="10"></textarea>
+            </div>
+            <div>
+              <label>Upload Image</label>
+              <div class="input-blog-image-group">
+                <label for="input-blog-image">
+                  <p>Attach File</p>
+                  <img src="img/gambar-attach.png" alt="file" />
+                </label>
+                <input type="file" id="input-blog-image" />
+              </div>
+            </div>
+            <div>
+              <button>Post</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr />
+      <div id="contents" class="blog-list">
+        <div class="blog-list-item">
+          <div class="blog-image">
+            <img src="img/gambar-blog.png" />
+          </div>
+          <div class="blog-content">
+            <div class="btn-group">
+              <button class="btn-edit">Edit Postingan</button>
+              <button class="btn-post">Posting Blog</button>
+            </div>
+            <h1>
+              <a href="blog-detail.html" target="_blank"> Tenaga IT sangat dibutuhkan di Indonesia </a>
+            </h1>
+            <div class="detail-blog-content">13 Oktober 2022 | Hydrilla Fragrant</div>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero animi debitis assumenda excepturi aut impedit sit eos quasi officia. Neque necessitatibus maxime magni provident suscipit libero fugit quas. Dignissimos, magnam?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="blog.js"></script>
+</html>

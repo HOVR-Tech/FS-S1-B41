@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+}
+
+.card {
+  display: flex;
+  width: 80vw;
+  padding: 30px;
+  margin: 3rem auto;
+  box-shadow: 0 0 20px black;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#card-left {
+  flex: 40%;
+}
+
+#card-right {
+  flex: 60%;
+}
+nav {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  background-color: aqua;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  align-items: center;
+}
+
+nav ul li {
+  margin-right: 15px;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+nav ul li img {
+  width: 65px;
+}
+
+.nav-right a {
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: blueviolet;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  left: 75rem;
+}
+
+h1 {
+  color: brown;
+}
+
+p {
+  position: relative;
+  left: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  text-align: justify;
+}

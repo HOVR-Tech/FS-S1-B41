@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day2</title>
+    <link rel="stylesheet" href="contact.css" />
+  </head>
+  <body>
+    <div class="box">
+      <h1 class="h1">Contact</h1>
+      <form action="" class="form">
+        <div>
+          <label for="nama">Nama :</label><br />
+          <input type="text" id="nama" required />
+        </div>
+        <br />
+        <div>
+          <label for="email">Email :</label><br />
+          <input type="email" id="email" required />
+        </div>
+        <br />
+        <div>
+          <label for="noHp">No.HP :</label><br />
+          <input type="number" id="noHp" required />
+        </div>
+        <br />
+        <div>
+          <label for="kerja">Perusahaan :</label><br />
+          <input type="text" id="kerja" required />
+        </div>
+        <br />
+        <div>
+          <label for="subjek">Subjek :</label><br />
+          <select class="form-select" id="subjek" required>
+            <option selected></option>
+            <option value="1">FrontEnd</option>
+            <option value="2">BackEnd</option>
+            <option value="3">FullStack</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label for="pesan">Pesan :</label><br />
+          <textarea name="pesan" id="pesan" cols="21" rows="7" placeholder="ketik disini!"></textarea>
+        </div>
+        <br />
+        <div>
+          <button type="submit">Kirim</button>
+        </div>
+      </form>
+    </div>
+    <a href="index.html">Back</a>
+  </body>
+</html>
