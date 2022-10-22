@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+nav {
+  background-color: #fefefe;
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  background-color: white;
+  box-shadow: 0 0 10px black;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  align-items: center;
+}
+
+nav ul li {
+  margin-right: 15px;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+nav ul li img {
+  width: 75px;
+  border-radius: 75px;
+}
+
+nav ul li a {
+  color: black;
+}
+
+.nav-left {
+  flex: 50%;
+}
+
+.nav-right {
+  flex: 50%;
+  text-align: end;
+  margin-right: 50px;
+}
+
+.nav-right a {
+  background-color: orangered;
+  padding: 10px 30px;
+  color: white;
+  border-radius: 15px;
+}
+
+.detail-blog {
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.detail-blog .detail-blog-card img {
+  width: 100%;
+}
+
+.detail-blog .detail-blog-card .detail-blog-title {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.detail-blog .detail-blog-card .detail-blog-author {
+  margin-bottom: 20px;
+}
+
+.detail-blog .detail-blog-card .detail-blog-content {
+  font-size: 20px;
+}

@@ -16,6 +16,6 @@ function tampilkan() {
 
   let penerimaEmail = 'sacrew.jr@gmail.com';
   let a = document.createElement('a');
-  a.href = `mailto:${penerimaEmail}?subjek:${subjek}&body= Hello, my name is ${nama}, ${pesan}`;
+  a.href = `mailto:${penerimaEmail}?subject:${subjek}&body= Hello, my name is ${nama}, ${pesan}`;
   a.click();
 }

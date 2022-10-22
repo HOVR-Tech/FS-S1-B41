@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: hsl(0, 0%, 90%);
 }
 
 /* Navbar */
@@ -32,17 +31,6 @@ nav {
   right: 70px;
   list-style-type: none;
 }
-
-.nav-right a {
-  text-align: center;
-  font-size: 17px;
-  font-weight: bold;
-  padding: 4px;
-  background-color: black;
-  color: white;
-  border-radius: 15px;
-}
-/* Akhir Navbar */
 
 section {
   margin: 100px auto;
