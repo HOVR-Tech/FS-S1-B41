@@ -4,49 +4,69 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Day4</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Personal Web</title>
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
+
   <body>
-    <!-- NavBar -->
-    <nav>
-      <div id="nav-left" class="nav-left">
-        <ul>
-          <li>
-            <a href="index.html"><img src="img/logodumbways-removebg-preview.png" /></a>
-          </li>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="blog.html" class="blog">Blog</a></li>
-        </ul>
-      </div>
-      <div class="nav-right">
-        <a href="contact.html">Contact</a>
-      </div>
-    </nav>
-    <!-- Akhir NavBar -->
+    <!-- NAVIGATION -->
+    <header class="navbar">
+      <nav class="nav-menu container">
+        <div class="nav-left">
+          <a href="index.html" class="nav-logo"><img src="./assets/images/logo.png" alt="logo" /></a>
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="project.html" class="nav-link">My Project</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-right">
+          <a href="contact.html" class="btn btn-primary">Contact Me</a>
+        </div>
+      </nav>
+    </header>
 
-    <div class="card">
-      <div id="card-left">
-        <img src="img/propil.jpg" border="1" style="width: 35rem; border-radius: 20px" />
-        <h1>Hydrilla Fragrant</h1>
-        <h3>
-          Fullstack Developer <br />
-          JavaScript | PHP
-        </h3>
-      </div>
-      <div id="card-right">
-        <h1>Hi! Welcome to my Meta</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta debitis iste ratione. Quia quidem unde voluptatibus, at recusandae reiciendis? Qui sunt aut quasi in, vel expedita totam esse asperiores enim. Lorem ipsum dolor sit
-          amet consectetur, adipisicing elit. Veniam, quis laborum! Rerum inventore perferendis sunt atque ratione expedita architecto aliquam ab aut dolores, eaque, impedit aspernatur id magnam culpa quidem. Lorem ipsum dolor sit, amet
-          consectetur adipisicing elit. Similique consectetur recusandae iste accusantium dolores, placeat, hic, accusamus exercitationem aut amet libero quasi quibusdam? Obcaecati, molestias voluptatem non iure aliquid ipsam!
-        </p>
+    <main>
+      <!-- HERO SECTION -->
+      <section class="hero container">
+        <div class="hero-left">
+          <div class="hero-text">
+            <h1>Hi Welcome to my hut</h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime explicabo porro minus ea dicta assumenda omnis, ullam consequatur ex vero saepe rerum magni tempora rem vitae! Reprehenderit aperiam consequatur explicabo. Odit
+              culpa in minima praesentium veritatis velit optio asperiores hic, quos eos molestiae sunt, exercitationem voluptatem adipisci eum corrupti voluptas sint cum vel assumenda voluptates aspernatur quisquam repellat eaque. Magnam?
+            </p>
+          </div>
+          <div class="hero-btn">
+            <a href="contact.html" class="btn btn-primary">contact</a>
+            <a href="#" class="btn btn-white">download CV</a>
+          </div>
+          <div class="hero-social">
+            <a href="#" class="social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fa-brands fa-github-alt"></i></a>
+          </div>
+        </div>
 
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, dolor unde aliquam perferendis optio expedita ratione error autem pariatur accusamus quos minima, repudiandae vero a, eius atque necessitatibus commodi? Quia. Lorem
-          ipsum, dolor sit amet consectetur adipisicing elit. Facere ratione natus aspernatur, qui assumenda quos suscipit pariatur! Est expedita omnis voluptas neque assumenda rem odio vel similique ipsum. Consequatur, est?
-        </p>
-      </div>
-    </div>
+        <div class="profile-card">
+          <img src="./assets/images/profile-img.jpg" alt="profile-img" />
+          <div class="profile-detail">
+            <h2>Hydrilla Fragrant</h2>
+            <p>Fullstack Developer</p>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

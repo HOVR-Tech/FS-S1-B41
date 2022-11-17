@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add Post</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Font Google: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../public/css/style.css" />
+  </head>
+  <body>
+    <!-- NavBar -->
+    <div>
+      <nav class="navbar navbar-light navbar-expand-lg bg-light">
+        <a class="navbar-brand" href="/">
+          <img src="../public/img/logodumbways-removebg-preview.png" alt="" width="55" height="45" class="d-inline-block align-text-top" />
+        </a>
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- <div class="collapse navbar-collapse container-fluid" id="navbarNav"> -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/blog">Blog</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/project">Add Project</a>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-toolbar">
+          <a class="btn btn-dark fw-semibold rounded-5 px-4 d-inline-block text-truncate mx-5" href="/contact">Contact Me</a>
+        </div>
+      </nav>
+    </div>
+    <!-- Akhir Navbar -->
+
+    <!-- Form -->
+    <section id="addBlog-section">
+      <form id="addBlog-form" class="addBlog-form container col-md-12 col-lg-5 p-4 shadow-lg bg-body rounded rounded-3" action="/add-blog" method="POST">
+        <h2 class="text-center fw-bold">Create Post</h2>
+        <div class="input row">
+          <div class="col-md-12 mb-3">
+            <label for="inputTitle" class="form-label fw-bold">Title</label>
+            <input name="inputTitle" id="inputTitle" class="form-control" />
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="inputAuthor" class="form-label fw-bold">Author</label>
+            <input name="inputAuthor" id="inputAuthor" class="form-control" />
+          </div>
+          <div class="input row">
+            <div class="col-md-12 mb-3">
+              <label for="inputContent" class="form-label fw-bold">Content</label>
+              <textarea name="inputContent" id="inputContent" class="form-control" style="resize: none; width: 32.5rem; height: 15rem" placeholder="Type Here.."></textarea>
+            </div>
+            <div class="input row">
+              <div class="col-md-12 mb-3">
+                <label class="form-label fw-bold">Put an Image</label>
+                <div class="input row">
+                  <label for="input-blog-image" class="form-label fw-bold d-flex">
+                    <p>Attach File</p>
+                    <img src="../public/img/gambar-attach.png" alt="file" style="width: 25px; height: 28px" />
+                  </label>
+                  <input type="file" id="input-blog-image" class="form-control" style="position: relative; left: 12px" />
+                </div>
+              </div>
+              <div class="input row">
+                <div class="btn-toolbar">
+                  <button class="btn btn-dark rounded-5 px-4 fw-bold" style="position: relative; left: 26.5rem; margin-top: 2.5rem">Post</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <!-- Akhir Form -->
+  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</html>
