@@ -79,7 +79,7 @@ const createProjectItem = (project) => {
   projectArticle.innerHTML = `
     <img src=${uploadImage} alt="">
     <div class="project-name">
-        <a href="project-detail.html" target="_blank"><h3>${projectName}</h3></a>
+        <a href="project-details.html" target="_blank"><h3>${projectName}</h3></a>
         <div class="project-duration">
             <p>Duration: ${getDurationTime(startDate, endDate)}</p>
             <p>Created: ${getCreationDate(startDate)}</p>
