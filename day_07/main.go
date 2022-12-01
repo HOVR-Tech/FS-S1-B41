@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -68,24 +69,24 @@ func FormAddProject(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
-// func AddProject(w http.ResponseWriter, r *http.Request) {
+func AddProject(w http.ResponseWriter, r *http.Request) {
 
-// 	err := r.ParseForm()
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}  
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatal(err)
+	}  
 	
-// 	// GET DATA FROM INPUT FORM
-// 	fmt.Println("Project Name : " + r.ParseForm.Get("project-name"))
-// 	fmt.Println("Start Date : " + r.ParseForm.Get("start-date"))
-// 	fmt.Println("End Date : " + r.ParseForm.Get("end-date"))
-// 	fmt.Println("Description : " + r.ParseForm.Get("project-description"))
-// 	fmt.Println("Use Node JS " + r.ParseForm.Get("nodejs"))
-// 	fmt.Println("Use React JS " + r.ParseForm.Get("reactjs"))
-// 	fmt.Println("Use Next JS " + r.ParseForm.Get("nextjs"))
-// 	fmt.Println("Use Typescript " + r.ParseForm.Get("typescript"))
+	// GET DATA FROM INPUT FORM
+	fmt.Println("Project Name : " + r.PostForm.Get("project-name"))
+	fmt.Println("Start Date : " + r.PostForm.Get("start-date"))
+	fmt.Println("End Date : " + r.PostForm.Get("end-date"))
+	fmt.Println("Description : " + r.PostForm.Get("project-description"))
+	fmt.Println("Use Node JS " + r.PostForm.Get("nodejs"))
+	fmt.Println("Use React JS " + r.PostForm.Get("reactjs"))
+	fmt.Println("Use Next JS " + r.PostForm.Get("nextjs"))
+	fmt.Println("Use Typescript " + r.PostForm.Get("typescript"))
 
 
-// 	http.Redirect(w, r, "/form-add-project", http.StatusMovedPermanently)
-// }
+	http.Redirect(w, r, "/form-add-project", http.StatusMovedPermanently)
+}
 

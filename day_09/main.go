@@ -13,42 +13,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var Data = map[string]interface{}{
-	"Title": "Personal Web",
-}
-
-// Struct Blog
-type Blog struct {
-	Id		  	int
-	Title	  	string
-	Post_date 	time.Time
-	Format_date string
-	Author		string
-	Content		string
-}
-
-var Blogs = []Blog{
-	{
-	Title: "Blog Satu",
-	Author: "Hydrilla Fragrant",
-	Content: "Berita Blog Satu",
-	},
-	{
-	Title: "Blog Dua",
-	Author: "Hydrilla Fragrant",
-	Content: "Berita Blog Dua",
-	},
-}
-
-// Struct Project
 type Project struct {
-	ID                  int
-	ProjectName         string
-	ProjectStartDate    string
-	ProjectEndDate      string
-	ProjectDuration     string
-	ProjectDescription  string
-	ProjectTechnologies []string
+	ID 						int
+	ProjectName	  			string
+	ProjectStartDate 		time.Time
+	ProjectEndDate 			time.Time
+	ProjectStartDateString	string
+	ProjectEndDateString	string
+	ProjectDuration			string
+	ProjectDescription		string
+	ProjectTechnologies		[]string
 }
 
 var ProjectList = []Project{}
@@ -56,52 +30,81 @@ var ProjectList = []Project{}
 func main() {
 	route := mux.NewRouter()
 
-	// Database Connect
+	// DATABASE CONNECTION
 	connection.DatabaseConnect()
 
-	// route path folder untuk public
+	// ROUTING PATH TO PUBLIC
 	route.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
-	//routing
-	route.HandleFunc("/hello", helloWorld).Methods("GET")
-	route.HandleFunc("/", home).Methods("GET")
+	// INDEX
+	route.HandleFunc("/", Home).Methods("GET")
 	
-	//BLog 
-	route.HandleFunc("/blog", blog).Methods("GET")
-	route.HandleFunc("/blog-details/{index}", blogDetails).Methods("GET")
-	route.HandleFunc("/form-blog", formAddBlog).Methods("GET")
-	route.HandleFunc("/add-blog", addBlog).Methods("POST")
-	route.HandleFunc("/delete-blog/{index}", deleteBlog).Methods("GET")
+	// CONTACT
+	route.HandleFunc("/contact", Contact).Methods("GET")
 	
-	// Project
-	route.HandleFunc("/project", project).Methods("GET")
-	route.HandleFunc("/project-details/{index}", projectDetails).Methods("GET")
-	route.HandleFunc("/project/create", CreateProject).Methods("POST")
-	route.HandleFunc("/update-project/{index}", updateProject).Methods("GET")
-	route.HandleFunc("/delete-project/{index}", deleteProject).Methods("GET")
-
-
-	// Contact
-	route.HandleFunc("/contact", contact).Methods("GET")
+	// CREATE PROJECT 
+	route.HandleFunc("/form-add-project", FormAddProject).Methods("GET")
+	route.HandleFunc("/add-project", AddProject).Methods("POST")
+	route.HandleFunc("/project-details/{index}", ProjectDetails).Methods("GET")
 	
-
+	// UPDATE PROJECT
+	route.HandleFunc("/edit-project/{index}", EditProject).Methods("GET")
+	route.HandleFunc("/delete-project/{index}", DeleteProject).Methods("GET")
+	
+	// PORT HANDLING
 	fmt.Println("Server running on port 5000")
 	http.ListenAndServe("localhost:5000", route)
 }
 
-func helloWorld(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World!"))
-}
-
-
-// INDEX
-func home(w http.ResponseWriter, r *http.Request) {
+func Home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	var tmpl, err = template.ParseFiles("views/index.html")
+	tmpl, err := template.ParseFiles("views/index.html")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("message : " + err.Error()))
+		return
+	} else {
+		var renderData []Project
+		var item = Project{}
+
+		rows, _ := connection.Conn.Query(context.Background(), `SELECT "ID", "ProjectName", "ProjectStartDate", "ProjectEndDate", "ProjectDescription", "ProjectTechnologies" FROM public.project`)
+		for rows.Next() {
+
+		err := rows.Scan(&item.ID, &item.ProjectName, &item.ProjectStartDate, &item.ProjectEndDate, &item.ProjectDescription, &item.ProjectTechnologies)
+		
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		} else {
+			// PARSING DATE
+			item := Project{
+				ID:          		 item.ID,
+				ProjectName:  		 item.ProjectName,
+				ProjectDuration:     GetDuration(item.ProjectStartDate, item.ProjectEndDate),
+				ProjectDescription:  item.ProjectDescription,
+				ProjectTechnologies: item.ProjectTechnologies,
+				}
+			renderData = append(renderData, item)
+		}
+	}
+	response := map[string]interface{}{
+		"renderData": renderData,
+	}
+	
+
+	w.WriteHeader(http.StatusOK)
+	tmpl.Execute(w, response)
+	}
+}
+
+func Contact(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	var tmpl, err = template.ParseFiles("views/contact.html")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Message : " + err.Error()))
 		return
 	}
 
@@ -109,243 +112,121 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
-
-// BLOG
-func blog(w http.ResponseWriter, r *http.Request) {
+// CREATE PROJECT
+func FormAddProject(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	var tmpl, err = template.ParseFiles("views/blog.html")
+	tmpl, err := template.ParseFiles("views/form-add-project.html")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Message : " + err.Error()))
 		return
 	}
 
-	// var query = "SELECT id, title, content FROM blog"
+	w.WriteHeader(http.StatusOK)
+	tmpl.Execute(w, nil)
+}
 
-	rows, _ := connection.Conn.Query(context.Background(), "SELECT id, title, content FROM blog")
+func AddProject(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
 
-	var result []Blog // array data
+	if err != nil {
+		log.Fatal(err)
+	} else {
+	ProjectName 		 := r.PostForm.Get("project-name")
+	ProjectStartDate	 := r.PostForm.Get("start-date")
+	ProjectEndDate		 := r.PostForm.Get("end-date")
+	ProjectDescription	 := r.PostForm.Get("project-description")
+	ProjectTechnologies  := []string{r.PostForm.Get("nodejs"), r.PostForm.Get("reactjs"), r.PostForm.Get("golang"), r.PostForm.Get("typescript")}
+		
+		// var newProject = Project{
+		// 	ProjectName 		: projectName,
+		// 	ProjectStartDate 	: FormatDate(projectStartDate),
+		// 	ProjectEndDate		: FormatDate(projectEndDate),
+		// 	ProjectDuration 	: GetDuration(projectStartDate, projectEndDate),
+		// 	ProjectDescription	: projectDescription,
+		// 	ProjectTechnologies : []string{projectUseNodeJS, projectUseReactJS, projectUseGolang, projectUseTypescript},
+		// }
 
-	for rows.Next() {
-		var each = Blog{} //untuk manggil struct
-
-		err := rows.Scan(&each.Id, &each.Title, &each.Content)
+		_, err = connection.Conn.Exec(context.Background(), `INSERT INTO public.project("ProjectName", "ProjectStartDate", "ProjectEndDate", "ProjectDescription", "ProjectTechnologies") VALUES ($1, $2, $3, $4, $5)`, ProjectName, ProjectStartDate, ProjectEndDate, ProjectDescription, ProjectTechnologies)
 		if err != nil {
-			fmt.Println(err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("message : " + err.Error()))
 			return
 		}
-
-		each.Author = "Hydrilla Fragrant"
-		// each.Format_date = each.Post_date.Format("2 January 2006")
-
-		result = append(result, each)
-	}
-
-	fmt.Println(result)
-
-	respData := map[string]interface{}{
-		"Blogs": result,
-	}
-
-	w.WriteHeader(http.StatusOK)
-	tmpl.Execute(w, respData)
+	
+			// ProjectList = append(ProjectList, newProject)
+			
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		}
 }
 
-func blogDetails(w http.ResponseWriter, r *http.Request) {
+func ProjectDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	var tmpl, err = template.ParseFiles("views/blog-details.html")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Message : " + err.Error()))
-		return
-	}
-
-	var BlogDetails = Blog{}
-
-	index, _ := strconv.Atoi(mux.Vars(r)["index"])
-
-	for i, data := range Blogs {
-			if index == i {
-					BlogDetails = Blog{
-						Title	 : data.Title,
-						Content	 : data.Content,
-						Post_date: data.Post_date,
-						Author	 : data.Author,
-					}
-			}		
-	}
-
-
-	data := map[string]interface{}{
-		"Blog": BlogDetails,
-	}
-
-	w.WriteHeader(http.StatusOK)
-	tmpl.Execute(w, data)
-}
-
-func formAddBlog(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	var tmpl, err = template.ParseFiles("views/add-blog.html")
+	var tmpl, err = template.ParseFiles("views/project-details.html")
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Message : " + err.Error()))
 		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	tmpl.Execute(w, nil)
-}
-
-func addBlog(w http.ResponseWriter, r *http.Request) {
-	
-	err := r.ParseForm()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Title : " + r.PostForm.Get("inputTitle"))
-	fmt.Println("Content : " + r.PostForm.Get("inputContent"))
-
-	var title = r.PostForm.Get("inputTitle")
-	var content = r.PostForm.Get("inputContent")
-
-	var newBlog = Blog{
-		Title:   title,
-		Content: content,
-		Author:  "Hydrilla Fragrant",
-	}
-
-	Blogs = append(Blogs, newBlog)
-	
-
-	http.Redirect(w, r, "/blog", http.StatusMovedPermanently)
-}
-
-func deleteBlog(w http.ResponseWriter, r *http.Request) {
-	index, _ := strconv.Atoi(mux.Vars(r)["index"])
-
-	Blogs = append(Blogs[:index], Blogs[index+1:]...)
-
-	http.Redirect(w, r, "/blog", http.StatusFound)
-}
-
-
-// PROJECT
-func project(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	var tmpl, err = template.ParseFiles("views/project.html")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Message : " + err.Error()))
-		return
-	}
-	
-	w.WriteHeader(http.StatusOK)
-	tmpl.Execute(w, nil)
-}
-
-func projectDetails(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	tmpl, err := template.ParseFiles("views/project-details.html")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("message : " + err.Error()))
-		return
 	} else {
-		var renderDetail = Project{}
+		var renderDetails = Project{}
 		index, _ := strconv.Atoi(mux.Vars(r)["index"])
 
 		for i, data := range ProjectList {
 			if index == i {
-				renderDetail = Project{
-					ProjectName:         data.ProjectName,
-					ProjectStartDate:    data.ProjectStartDate,
-					ProjectEndDate:      data.ProjectEndDate,
-					ProjectDuration:     data.ProjectDuration,
-					ProjectDescription:  data.ProjectDescription,
+				renderDetails = Project{
+					ProjectName		   : data.ProjectName,
+					ProjectStartDate   : data.ProjectStartDate,
+					ProjectEndDate	   : data.ProjectEndDate,
+					ProjectDuration	   : data.ProjectDuration,
+					ProjectDescription : data.ProjectDescription,
 					ProjectTechnologies: data.ProjectTechnologies,
 				}
 			}
 		}
+		
 		data := map[string]interface{}{
-			"renderDetail": renderDetail,
+			"renderDetails": renderDetails,
 		}
-		w.WriteHeader(http.StatusOK)
-		tmpl.Execute(w, data)
+	
+	w.WriteHeader(http.StatusOK)
+	tmpl.Execute(w, data)
 	}
 }
 
-func CreateProject(w http.ResponseWriter, r *http.Request) {
+
+// UPDATE PROJECT
+func EditProject(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Message : " + err.Error()))
+		return
 	} else {
-		projectName := r.PostForm.Get("project-name")
-		projectStartDate := r.PostForm.Get("date-start")
-		projectEndDate := r.PostForm.Get("date-end")
-		projectDescription := r.PostForm.Get("project-description")
-		projectUseNodeJS := r.PostForm.Get("nodejs")
-		projectUseReactJS := r.PostForm.Get("reactjs")
-		projectUseGolang := r.PostForm.Get("golang")
-		projectUseTypeScript := r.PostForm.Get("typescript")
-
-		var newProject = Project{
-			ProjectName:         projectName,
-			ProjectStartDate:    FormatDate(projectStartDate),
-			ProjectEndDate:      FormatDate(projectEndDate),
-			ProjectDuration:     GetDuration(projectStartDate, projectEndDate),
-			ProjectDescription:  projectDescription,
-			ProjectTechnologies: []string{projectUseNodeJS, projectUseReactJS, projectUseGolang, projectUseTypeScript},
+			ID, _			   	:= strconv.Atoi(mux.Vars(r)["id"])
+			ProjectName		   	:= r.PostForm.Get("ProjectName")
+			ProjectStartDate   	:= r.PostForm.Get("start-date")
+			ProjectEndDate	   	:= r.PostForm.Get("end-date")
+			ProjectDescription 	:= r.PostForm.Get("project-description")
+			ProjectTechnologies := []string{r.PostForm.Get("nodejs"), r.PostForm.Get("reactjs"), r.PostForm.Get("golang"), r.PostForm.Get("typescript")}
+		
+		// DATABASE
+			_, err := connection.Conn.Exec(context.Background(), `UPDATE public.project SET "ProjectName"=$1, "ProjectStartDate"=$2, "ProjectEndDate"=$3, "ProjectDescription"=$4, "ProjectTechnologies"=$5 WHERE "ID"=$6`, ProjectName, ProjectStartDate, ProjectEndDate, ProjectDescription, ProjectTechnologies, ID)
+		
+		// ERROR
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("message :" + err.Error()))
+			return
 		}
-
-		fmt.Println(newProject)
-
-		ProjectList = append(ProjectList, newProject)
 
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
 }
 
-func updateProject(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	tmpl, err := template.ParseFiles("views/update-project.html")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("message : " + err.Error()))
-		return
-	} else {
-		var updateData = Project{}
-		index, _ := strconv.Atoi(mux.Vars(r)["index"])
-
-		for i, data := range ProjectList {
-			if index == i {
-				updateData = Project{
-					ProjectName:         data.ProjectName,
-					ProjectStartDate:    ReturnDate(data.ProjectStartDate),
-					ProjectEndDate:      ReturnDate(data.ProjectEndDate),
-					ProjectDescription:  data.ProjectDescription,
-					ProjectTechnologies: data.ProjectTechnologies,
-				}
-				ProjectList = append(ProjectList[:index], ProjectList[index+1:]...)
-			}
-		}
-		data := map[string]interface{}{
-			"updateData": updateData,
-		}
-		w.WriteHeader(http.StatusOK)
-		tmpl.Execute(w, data)
-	}
-}
-
-func deleteProject(w http.ResponseWriter, r *http.Request) {
+func DeleteProject(w http.ResponseWriter, r *http.Request) {
 
 	index, _ := strconv.Atoi(mux.Vars(r)["index"])
 
@@ -355,21 +236,20 @@ func deleteProject(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
 // ADDITIONAL FUNCTION
 //DURATION
-func GetDuration(startDate string, endDate string) string {
+func GetDuration(startDate time.Time, endDate time.Time) string {
 
-	layout := "2006-01-02"
+	// layout := "2006-01-02"
 
-	date1, _ := time.Parse(layout, startDate)
-	date2, _ := time.Parse(layout, endDate)
+	// date1, _ := time.Parse(layout, startDate)
+	// date2, _ := time.Parse(layout, endDate)
 
-	margin := date2.Sub(date1).Hours() / 24
+	margin := endDate.Sub(startDate).Hours() / 24
 	var duration string
 
-	if margin > 30 {
-		if (margin / 30) <= 1 {
+	if margin >= 30 {
+		if (margin / 30) == 1 {
 			duration = "1 Month"
 		} else {
 			duration = strconv.Itoa(int(margin)/30) + " Months"
@@ -386,38 +266,23 @@ func GetDuration(startDate string, endDate string) string {
 }
 
 // DATE
-func FormatDate(InputDate string) string {
+func FormatDate(InputDate time.Time) string {
 
-	layout := "2006-01-02"
-	t, _ := time.Parse(layout, InputDate)
+	// layout := "2006-01-02"
+	// t, _ := time.Parse(layout, InputDate)
 
-	Formated := t.Format("02 January 2006")
+	Formated := InputDate.Format("02 January 2006")
 
 	return Formated
 }
 
 // RETURN DATE FORMAT
-func ReturnDate(InputDate string) string {
+func ReturnDate(InputDate time.Time) string {
 
-	layout := "02 January 2006"
-	t, _ := time.Parse(layout, InputDate)
+	// layout := "02 January 2006"
+	// t, _ := time.Parse(layout, InputDate)
 
-	Formated := t.Format("2006-01-02")
+	Formated := InputDate.Format("2006-01-02")
 
 	return Formated
-}
-
-
-func contact(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	var tmpl, err = template.ParseFiles("views/contact.html")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Message : " + err.Error()))
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	tmpl.Execute(w, nil)
 }

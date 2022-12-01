@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: hsl(0, 0%, 90%);
+}
+
+/* Navbar */
+nav {
+  height: 10vh;
+}
+
+.navbar .navbar-brand {
+  position: relative;
+  left: 70px;
+}
+
+.navbar .navbar-nav {
+  position: relative;
+  left: 70px;
+}
+
+/* Akhir Navbar */
+
+section {
+  margin: 100px auto;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/* PROJECT DETAILS */
+.detail-left img {
+  width: 100%;
+}
+
+.content-description {
+  background: none;
+  border: none;
+
+  width: 100%;
+}
+
+.tech-list {
+  width: 100%;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.tech-item p {
+  margin-top: 15px;
+}

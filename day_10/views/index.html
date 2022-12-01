@@ -25,37 +25,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../public/css/style.css" />
+    <link rel="stylesheet" href="../public/css/style_10.css" />
   </head>
   <body>
     <!-- NavBar -->
-    <div>
-      <nav class="navbar navbar-light navbar-expand-lg bg-light">
-        <a class="navbar-brand" href="/">
+    <!-- Nav Left -->
+    <nav class="navbar navbar-light navbar-expand-lg bg-light">
+      <div class="navbar d-flex ms-5">
+        <a class="navbar-brand mx-5" href="/">
           <img src="../public/img/logodumbways-removebg-preview.png" alt="" width="55" height="45" class="d-inline-block align-text-top" />
         </a>
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active fw-bold" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" href="/form-add-project">Add Project</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Nav Right -->
+      <div class="navbar d-flex ms-auto me-5">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active fw-bold" href="/register">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" href="">Login</a>
+          </li>
+          <button class="btn btn-dark fw-semibold rounded-5 px-4 mx-5">
+            <a style="color: white; text-decoration: none" href="/contact">Contact Me</a>
           </button>
-          <!-- <div class="collapse navbar-collapse container-fluid" id="navbarNav"> -->
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/blog">Blog</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/form-add-project">Add Project</a>
-            </li>
-          </ul>
-        </div>
-        <div class="btn-toolbar">
-          <a class="btn btn-dark fw-semibold rounded-5 px-4 d-inline-block text-truncate mx-5" href="/contact">Contact Me</a>
-        </div>
-      </nav>
-    </div>
+        </ul>
+      </div>
+    </nav>
     <!-- Akhir Navbar -->
 
     <!-- Profile Section -->
@@ -117,7 +120,7 @@
           <!-- CONTENT -->
           {{range $index, $data := .renderData}}
           <div class="project-item card shadow p-2">
-            <img src="../public/img/{{$data.ProjectImage}}" alt="" height="250" class="card-img" />
+            <img src="../public/img/img-template-1.jpg" alt="" height="250" class="card-img" />
             <div class="card-body overflow-hidden" style="height: 195px">
               <a href="/project-details/{{$data.ID}}" class="nav-link">
                 <h5 class="card-title fw-semibold">{{$data.ProjectName}}</h5>
@@ -137,8 +140,8 @@
               <img src="../public/icons/typescript.svg" alt="typescript" style="width: 32px" />
               {{end}}
             </div>
-            <div class="card-body align-self-center gap-3">
-              <a href="/update-project/{{$data.ID}}" class="btn btn-dark">edit</a>
+            <div class="card-body gap-3">
+              <a href="/edit-project/{{$data.ID}}" class="btn btn-dark">edit</a>
               <a href="/delete-project/{{$data.ID}}" class="btn btn-danger">delete</a>
             </div>
           </div>
