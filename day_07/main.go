@@ -77,6 +77,7 @@ func AddProject(w http.ResponseWriter, r *http.Request) {
 	}  
 	
 	// GET DATA FROM INPUT FORM
+<<<<<<< HEAD
 	fmt.Println("Project Name : " + r.PostForm.Get("project-name"))
 	fmt.Println("Start Date : " + r.PostForm.Get("start-date"))
 	fmt.Println("End Date : " + r.PostForm.Get("end-date"))
@@ -85,6 +86,16 @@ func AddProject(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Use React JS " + r.PostForm.Get("reactjs"))
 	fmt.Println("Use Next JS " + r.PostForm.Get("nextjs"))
 	fmt.Println("Use Typescript " + r.PostForm.Get("typescript"))
+=======
+	fmt.Println("Project Name : " + r.ParseForm.Get("project-name"))
+	fmt.Println("Start Date : " + r.ParseForm.Get("start-date"))
+	fmt.Println("End Date : " + r.ParseForm.Get("end-date"))
+	fmt.Println("Description : " + r.ParseForm.Get("project-description"))
+	fmt.Println("Use Node JS " + r.ParseForm.Get("nodejs"))
+	fmt.Println("Use React JS " + r.ParseForm.Get("reactjs"))
+	fmt.Println("Use Next JS " + r.ParseForm.Get("nextjs"))
+	fmt.Println("Use Typescript " + r.ParseForm.Get("typescript"))
+>>>>>>> 182be16d2ed89514c218774ce24ab23d7f98cccc
 
 
 	http.Redirect(w, r, "/form-add-project", http.StatusMovedPermanently)
